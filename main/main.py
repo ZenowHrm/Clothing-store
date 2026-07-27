@@ -12,7 +12,7 @@ app._api.mount("/api", backend_app)
 def index() -> rx.Component:
     main = rx.el.div(
         rx.el.h1(
-            "Hola mundo running"
+            "Hola mundo"
         ),
         style= {
             "background": "#09f"
