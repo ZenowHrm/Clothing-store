@@ -1,24 +1,43 @@
 import reflex as rx
-from fastapi import FastAPI
+from theme import COLORS, hex_to_rgba
 
-from Backend.schemas.user import router as user
+#----Estados
 
-backend_app = FastAPI()
-app = rx.App()
+#----Componentes
 
-backend_app.include_router(user, tags=["User"])
-app._api.mount("/api", backend_app)
+#----Paginas
+from pages.principal import Pagprincipal
+from pages.gallery import Galeria
 
-def index() -> rx.Component:
-    main = rx.el.div(
-        rx.el.h1(
-            "Hola mundo"
-        ),
-        style= {
-            "background": "#09f"
-        }
-    )
-    
-    return main
+app = rx.App(
+    head_components=[
+        rx.el.link(rel="preconnect", href="https://fonts.googleapis.com"),
+        rx.el.link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin="anonymous"),
+    ],
+    stylesheets=[
+        "https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap",
+    ],
+    style={
+        "font_family": "'Comic Neue', cursive, sans-serif",
+    }
+)
 
-app.add_page(index, route="/")
+metadatos = [
+    {"name": "viewport", "content": "width=device-width, initial-scale=1.0"},
+]
+
+app.add_page(
+    Pagprincipal,
+    route="/",
+    title="TeeVibes Store | Inicio",
+    description="Encuentra los mejores estilos personalizados",
+    meta=metadatos
+)
+
+app.add_page(
+    Galeria,
+    route="/gallery",
+    title="TeeVibes Store | Galeria",
+    description="Encuentra los mejores estilos personalizados",
+    meta=metadatos
+)

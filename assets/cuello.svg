@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="200" height="200">
+  <!-- Forma principal del cuello de la camisa -->
+  <path d="
+    M 15 15 
+    L 85 15 
+    L 95 35 
+    L 68 80 
+    L 52 70 
+    L 75 28 
+    L 25 28 
+    L 48 70 
+    L 32 80 
+    L 5 35 
+    Z
+  " 
+  fill="#1A1A1A" 
+  stroke="#1A1A1A" 
+  stroke-width="1" 
+  stroke-linejoin="round" />
+  
+  <!-- Botón central inferior -->
+  <circle cx="50" cy="82" r="4.5" fill="#1A1A1A" />
+</svg>
