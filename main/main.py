@@ -12,7 +12,6 @@ from pages.notfoundpage import Pag404
 from pages.design import DesignPage
 
 app = rx.App(
-    show_built_with_reflex=False,
     head_components=[
         rx.el.link(rel="preconnect", href="https://fonts.googleapis.com"),
         rx.el.link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin="anonymous"),
