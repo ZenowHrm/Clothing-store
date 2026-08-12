@@ -76,8 +76,8 @@ def DesignPage():
                         id="canvas-wrapper",
                         style= {
                             "border-radius": "8px",
-                            "width": "60dvh",
-                            "height": "60dvh",
+                            "width": "1000px",
+                            "height": "1000px",
                             "transform-origin": "0 0",
                             "position": "absolute",
                             "will-change": "transform"
