@@ -167,65 +167,98 @@ def product_card(product: dict) -> rx.Component:
 def card_shoping(product):
     card = rx.card(
         rx.el.div(
-            rx.el.img(
-                src=product.card_image_url,
-                width="100%",
-                height="100%",
-                object_fit= "cover"
+            rx.el.div(
+                rx.el.img(
+                    src=product.card_image_url,
+                    width="100%",
+                    height="100%",
+                    object_fit= "cover"
+                ),
+                
+                style={
+                    "min-width": "60px",
+                    "width": "60px",
+                    "height": "60px",
+                    "border-radius": "10px",
+                    "overflow": "hidden"
+                }
             ),
-            
-            style={
-                "min-width": "60px",
-                "width": "60px",
-                "height": "60px",
-                "border-radius": "10px",
-                "overflow": "hidden"
-            }
-        ),
-        rx.el.div(
-            rx.text(product.title),
-            rx.text(product.attributes.prenda, opacity=0.8, font_size="0.8rem"),
-            
+            rx.el.div(
+                rx.text(product.title),
+                rx.text(product.attributes.prenda, opacity=0.8, font_size="0.8rem"),
+                
+                style= {
+                    "color": COLORS["black"],
+                    "flex": "1"
+                }
+            ),
+
             style= {
-                "color": COLORS["black"]
+                "display": "flex",
+                "flex-direction": "row",
+                "align-items": "center",
+                "gap": "10px"
             }
         ),
         rx.el.div(
-            rx.button(
-                rx.icon("arrow_big_up"),
-                on_click= CardState.send_to_cart(product["id"]),
-                width="30px",
-                height="20px",
-                padding="5px",
+            rx.el.div(
+                rx.button(
+                "-",
+                    on_click= CardState.remove_to_cart(product["id"]),
+                    width="20px",
+                    height="20px",
+                    padding="5px",
+                    color="black",
+                    background_color="transparent",
+                    font_size="1.5rem"
+                ),
+                rx.input(
+                    value=CardState.cards_in_cart[product.id],
+                    type="number",
+                    width="2rem",
+                    height="25px",
+                    max_length=4,
+                ),
+                rx.button(
+                    "+",
+                    on_click= CardState.send_to_cart(product["id"]),
+                    width="20px",
+                    height="20px",
+                    padding="5px",
+                    color="black",
+                    background_color="transparent",
+                    font_size="1.5rem"
+                ),
+
+                style= {
+                "display": "flex",
+                "flex-direction": "row",
+                "align-items": "center",
+                "gap": "5px"
+                }
             ),
-            rx.input(
-                value=CardState.cards_in_cart[product.id],
-                type="number",
-                width="2rem",
-                height="30px",
-                max_length=4,
-            ),
-            rx.button(
-                rx.icon("arrow_big_down"),
-                on_click= CardState.remove_to_cart(product["id"]),
-                width="30px",
-                height="20px",
-                padding="5px",
+            rx.text(
+                f"{product.price} USD",
+                
+                text_align= "end",
+                color="black",
+                width="80px"
             ),
             
             style= {
                 "display": "flex",
-                "flex-direction": "column",
-                "align-items": "center",
+                "flex-direction": "row",
+                "justify-content": "flex-end",
                 "gap": "5px"
             }
         ),
         
         style= {
             "display": "flex",
-            "flex-direction": "row",
-            "align-items": "center",
-            "gap": "10px"
+            "flex-direction": "column",
+            "justify-content": "center",
+            "gap": "10px",
+            "flex-shrink": "0"
         }
     )
     

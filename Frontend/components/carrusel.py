@@ -29,6 +29,8 @@ def Carrusel() -> rx.Component:
                 on_click=CarouselState.prev_slide,
                 style={
                     "position": "absolute",
+                    "width": "3rem",
+                    "height": "3rem",
                     "top": "50%",
                     "left": "15px",
                     "transform": "translateY(-50%)",
@@ -37,7 +39,7 @@ def Carrusel() -> rx.Component:
                     "border": "none",
                     "padding": "10px 15px",
                     "cursor": "pointer",
-                    "border_radius": "50%",
+                    "border_radius": "100%",
                     "font_size": "18px",
                 }
             ),
@@ -47,6 +49,8 @@ def Carrusel() -> rx.Component:
                 on_click=CarouselState.next_slide,
                 style={
                     "position": "absolute",
+                    "width": "3rem",
+                    "height": "3rem",
                     "top": "50%",
                     "right": "15px",
                     "transform": "translateY(-50%)",
@@ -55,7 +59,7 @@ def Carrusel() -> rx.Component:
                     "border": "none",
                     "padding": "10px 15px",
                     "cursor": "pointer",
-                    "border_radius": "50%",
+                    "border_radius": "100%",
                     "font_size": "18px",
                 }
             ),

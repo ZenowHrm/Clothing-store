@@ -54,16 +54,16 @@ def Pagprincipal():
                 }
             }
             @keyframes flotarInfinito {
-            0%, 100% {
-                /* Comienza y termina en su posición original */
-                transform: translateY(0);
-                animation-timing-function: ease-out;
-            }
-            50% {
-                /* En la mitad de la animación, sube 10 píxeles */
-                transform: translateY(-10px);
-                animation-timing-function: ease-in;
-            }
+                0%, 100% {
+                    /* Comienza y termina en su posición original */
+                    transform: translateY(0);
+                    animation-timing-function: ease-out;
+                }
+                50% {
+                    /* En la mitad de la animación, sube 10 píxeles */
+                    transform: translateY(-10px);
+                    animation-timing-function: ease-in;
+                }
             }
             
             @media (max-width: 600px) {
@@ -124,29 +124,37 @@ def Pagprincipal():
                         }
                     ),
                     rx.el.div(
-                        rx.button(
-                            "Customizar Pieza",
-                            rx.icon("arrow_right", size=20),
-            
-                            style= {
-                                "background": "rgba(255, 255, 255, 0.22)",
-                                "box-shadow": "0 4px 30px rgba(0, 0, 0, 0.1)",
-                                "backdrop-filter": "blur(11.6px)",
-                                "-webkit-backdrop-filter": "blur(11.6px)",
-                                "border": "1px solid rgba(255, 255, 255, 0.3)",
-                                "padding": "20px",
-                                "font-size": "1rem"
-                            }
+                        rx.link(
+                            rx.button(
+                                "Customizar Pieza",
+                                rx.icon("arrow_right", size=20),
+                
+                                style= {
+                                    "background": "rgba(255, 255, 255, 0.22)",
+                                    "box-shadow": "0 4px 30px rgba(0, 0, 0, 0.1)",
+                                    "backdrop-filter": "blur(11.6px)",
+                                    "-webkit-backdrop-filter": "blur(11.6px)",
+                                    "border": "1px solid rgba(255, 255, 255, 0.3)",
+                                    "padding": "20px",
+                                    "font-size": "1rem"
+                                }
+                            ),
+                            
+                            href= "/design"
                         ),
-                        rx.button(
-                            "contáctanos",
-            
-                            style= {
-                                "box-shadow": "0px 0px 20px #222",
-                                "background": hex_to_rgba(COLORS["purple"], 0.8),
-                                "padding": "20px",
-                                "font-size": "1rem"
-                            }
+                        rx.link(
+                            rx.button(
+                                "contáctanos",
+                
+                                style= {
+                                    "box-shadow": "0px 0px 20px #222",
+                                    "background": hex_to_rgba(COLORS["purple"], 0.8),
+                                    "padding": "20px",
+                                    "font-size": "1rem"
+                                }
+                            ),
+                            
+                            href= "/contact"
                         ),
             
                         style= {

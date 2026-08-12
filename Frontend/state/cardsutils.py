@@ -7,6 +7,10 @@ class CardState(rx.State):
     
     cart_products_details: list[Product] = []
     
+    total: float = 0
+    
+    show_modal: bool = False
+    
     def send_to_cart(self, id):
         product = str(id)
         
@@ -17,6 +21,8 @@ class CardState(rx.State):
             self.cards_in_cart[product] = 1
             
             self.update_cart_detail()
+        
+        self.set_total()
         
     def update_cart_detail(self):
         lista_detail: list[Product] = []
@@ -35,3 +41,20 @@ class CardState(rx.State):
             self.cards_in_cart.pop(product)
             
             self.update_cart_detail()
+        
+        self.set_total()
+    
+    def set_total(self):
+        valor: float = 0
+        
+        for i in self.cart_products_details:
+            valor += (i.price * self.cards_in_cart[str(i.id)])
+        
+        self.total = round(valor, 2)
+        
+    def abrir_modal(self):
+        self.show_modal = True
+    def cerrar_modal(self):
+        self.show_modal = False
+    def cambiar_estado_modal(self, valor: bool):
+        self.show_modal = valor
