@@ -169,8 +169,8 @@ def Pagprincipal():
                                     "/camisa.svg",
             
                                     style= {
-                                        "width": "30px",
-                                        "height": "30px",
+                                        "width": ["25px","30px"],
+                                        "height": ["25px","30px"],
                                     }
                                 ),
                                 rx.el.div(
@@ -188,7 +188,7 @@ def Pagprincipal():
                                             bg=COLORS["white"],
                                             font_size="0.8rem",
                                             padding="0",
-                                            width="77px",
+                                            width=["65px", "77px"],
                                         ),
             
                                         rx.select.content(
@@ -227,8 +227,8 @@ def Pagprincipal():
                                     "/cuello.svg",
             
                                     style= {
-                                        "width": "30px",
-                                        "height": "30px",
+                                        "width": ["25px","30px"],
+                                        "height": ["25px","30px"],
                                     }
                                 ),
                                 rx.el.div(
@@ -246,7 +246,7 @@ def Pagprincipal():
                                             bg=COLORS["white"],
                                             font_size="0.8rem",
                                             padding="0",
-                                            width="77px"
+                                            width=["65px", "77px"]
                                         ),
             
                                         rx.select.content(
@@ -284,8 +284,8 @@ def Pagprincipal():
                                     "/paleta.svg",
             
                                     style= {
-                                        "width": "30px",
-                                        "height": "30px",
+                                        "width": ["25px","30px"],
+                                        "height": ["25px","30px"],
                                     }
                                 ),
                                 rx.el.div(
@@ -303,7 +303,7 @@ def Pagprincipal():
                                             bg=COLORS["white"],
                                             font_size="0.8rem",
                                             padding="0",
-                                            width="77px",
+                                            width=["65px", "77px"],
                                         ),
             
                                         rx.select.content(
@@ -342,8 +342,8 @@ def Pagprincipal():
                                     "/regla.svg",
             
                                     style= {
-                                        "width": "30px",
-                                        "height": "30px",
+                                        "width": ["25px","30px"],
+                                        "height": ["25px","30px"],
                                     }
                                 ),
                                 rx.el.div(
@@ -361,7 +361,7 @@ def Pagprincipal():
                                             bg=COLORS["white"],
                                             font_size="0.8rem",
                                             padding="0",
-                                            width="77px",
+                                            width=["65px", "77px"],
                                         ),
             
                                         rx.select.content(
@@ -540,7 +540,8 @@ def Pagprincipal():
                     style= {
                         "font-size": "3rem",
                         "color": COLORS["black"],
-                        "text-align": "start"
+                        "text-align": "start",
+                        "padding": "0 1rem"
                     }
                 ),
                 
@@ -591,7 +592,7 @@ def Pagprincipal():
                 "display": "flex",
                 "align-items": "center",
                 "flex-direction": "column",
-                "padding": "2rem 1rem"
+                "padding": "2rem 0"
             }
         ),
         rx.el.section(
@@ -644,7 +645,8 @@ def Pagprincipal():
                     style= {
                         "font-size": "3rem",
                         "color": COLORS["black"],
-                        "text-align": "start"
+                        "text-align": "start",
+                        "padding": "0 1rem"
                     }
                 ),
             
@@ -695,7 +697,7 @@ def Pagprincipal():
                 "display": "flex",
                 "align-items": "center",
                 "flex-direction": "column",
-                "padding": "2rem 1rem"
+                "padding": "2rem 0"
             }
         ),
         rx.el.section(

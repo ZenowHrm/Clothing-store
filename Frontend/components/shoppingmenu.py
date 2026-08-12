@@ -135,7 +135,7 @@ def Shopping_cart():
                 rx.el.br(),
                 rx.el.br(),
                 "También puedes visitar mi ", 
-                rx.link("portafolio", href="https://portfoliosantimy.up.railway.app"), 
+                rx.link("portafolio", href="https://portfoliosantimy.onrender.com"), 
                 " para ver más cosas interesantes y contactarte conmigo directamente.",
             ),
             rx.button(

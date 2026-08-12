@@ -324,32 +324,49 @@ window.exportarPDF = function(nombre = "diseno.pdf") {
 // ==========================================
 // 9. ZOOM Y PAN
 // ==========================================
-
 function setupZoomPan() {
     const container = document.getElementById('canvas-container');
     const wrapper = document.getElementById('canvas-wrapper');
     
     if (!container || !wrapper) return;
 
-    // --- LA SOLUCIÓN MÁGICA AQUÍ ---
+    // Previene gestos nativos del navegador dentro del contenedor
+    container.style.touchAction = 'none';
     wrapper.style.setProperty("transform-origin", "0px 0px", "important");
 
     let scale = 1;
     let pointX = 0;
     let pointY = 0;
-    let panning = false;
+    
+    let panning = false;       // arrastre con ratón (botón central/derecho)
+    let pinchActive = false;   // gesto de dos dedos activo
     let start = { x: 0, y: 0 };
+    let pinchStart = {
+        scale: 1,
+        pointX: 0,
+        pointY: 0,
+        distance: 0,
+        midX: 0,
+        midY: 0
+    };
 
+    // ----- CENTRADO Y ESCALA INICIAL (contener, nunca desbordar) -----
     function centerCanvas() {
         const containerRect = container.getBoundingClientRect();
-        
-        // Leemos el tamaño real del lienzo dinámicamente en lugar de usar 500
-        const wrapperWidth = wrapper.offsetWidth;
-        const wrapperHeight = wrapper.offsetHeight;
+        const canvasW = wrapper.offsetWidth;
+        const canvasH = wrapper.offsetHeight;
+        if (canvasW === 0 || canvasH === 0) return;
 
-        pointX = (containerRect.width - wrapperWidth) / 2;
-        pointY = (containerRect.height - wrapperHeight) / 2;
-        
+        // Escala para que el lienzo quepa COMPLETAMENTE (contain)
+        const scaleX = containerRect.width / canvasW;
+        const scaleY = containerRect.height / canvasH;
+        scale = Math.min(scaleX, scaleY);           // el lado más restrictivo
+        scale = Math.min(5, Math.max(0.2, scale)); // límites de seguridad
+
+        // Centrar una vez escalado
+        pointX = (containerRect.width - canvasW * scale) / 2;
+        pointY = (containerRect.height - canvasH * scale) / 2;
+
         setTransform();
     }
 
@@ -357,9 +374,10 @@ function setupZoomPan() {
         wrapper.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
     }
 
-    setTimeout(centerCanvas, 100); 
+    setTimeout(centerCanvas, 100);
+    window.addEventListener('resize', centerCanvas);
 
-    // --- 1. ZOOM CORREGIDO HACIA EL PUNTERO ---
+    // ----- ZOOM CON RUEDA (PC) – TU FÓRMULA ORIGINAL INTACTA -----
     container.addEventListener('wheel', (e) => {
         e.preventDefault();
         
@@ -371,9 +389,8 @@ function setupZoomPan() {
         const delta = isZoomingIn ? 1.1 : 0.9; 
         
         let newScale = scale * delta;
-        newScale = Math.min(Math.max(0.2, newScale), 5); // Límites de zoom
+        newScale = Math.min(Math.max(0.2, newScale), 5);
         
-        // --- TU MATEMÁTICA ORIGINAL INTACTA ---
         const unscaledX = (mouseX - pointX) / scale;
         const unscaledY = (mouseY - pointY) / scale;
 
@@ -384,12 +401,10 @@ function setupZoomPan() {
         pointY -= zoomOffsetY - pointY;
 
         scale = newScale;
-
         setTransform();
     }, { passive: false });
 
-
-    // --- 2. MOVER EL LIENZO ---
+    // ----- ARRASTRE CON RATÓN (botón central o derecho) -----
     container.addEventListener('mousedown', (e) => {
         if (e.button === 1 || e.button === 2) { 
             e.preventDefault();
@@ -413,4 +428,80 @@ function setupZoomPan() {
     });
 
     container.addEventListener('contextmenu', e => e.preventDefault());
+
+    // ========== NUEVO: TÁCTIL (MÓVIL) – SOLO DOS DEDOS ==========
+
+    function getTouchDistance(t1, t2) {
+        const dx = t1.clientX - t2.clientX;
+        const dy = t1.clientY - t2.clientY;
+        return Math.hypot(dx, dy);
+    }
+
+    function getTouchMidpoint(t1, t2) {
+        return {
+            x: (t1.clientX + t2.clientX) / 2,
+            y: (t1.clientY + t2.clientY) / 2
+        };
+    }
+
+    container.addEventListener('touchstart', (e) => {
+        const touches = e.touches;
+
+        if (touches.length === 2) {
+            // Solo iniciamos acciones con dos dedos
+            e.preventDefault(); // evita zoom nativo y scroll
+            panning = false;
+            pinchActive = true;
+            const midpoint = getTouchMidpoint(touches[0], touches[1]);
+            pinchStart = {
+                scale: scale,
+                pointX: pointX,
+                pointY: pointY,
+                distance: getTouchDistance(touches[0], touches[1]),
+                midX: midpoint.x,
+                midY: midpoint.y
+            };
+        }
+        // Si es un solo dedo, NO hacemos nada → se permite dibujar
+    }, { passive: false });
+
+    container.addEventListener('touchmove', (e) => {
+        const touches = e.touches;
+        if (!pinchActive || touches.length !== 2) return;
+
+        e.preventDefault();
+
+        // ---- Pellizco (zoom) ----
+        const newDist = getTouchDistance(touches[0], touches[1]);
+        const deltaScale = newDist / pinchStart.distance;
+        let newScale = pinchStart.scale * deltaScale;
+        newScale = Math.min(5, Math.max(0.2, newScale));
+
+        // ---- Arrastre con dos dedos (pan) ----
+        const newMidpoint = getTouchMidpoint(touches[0], touches[1]);
+        const deltaX = newMidpoint.x - pinchStart.midX;
+        const deltaY = newMidpoint.y - pinchStart.midY;
+
+        // Aplicamos el pan directamente al punto inicial
+        pointX = pinchStart.pointX + deltaX;
+        pointY = pinchStart.pointY + deltaY;
+
+        // Zoom hacia el punto medio original (matemática idéntica a la rueda)
+        const unscaledX = (pinchStart.midX - pinchStart.pointX) / pinchStart.scale;
+        const unscaledY = (pinchStart.midY - pinchStart.pointY) / pinchStart.scale;
+
+        pointX = pinchStart.midX + deltaX - unscaledX * newScale;
+        pointY = pinchStart.midY + deltaY - unscaledY * newScale;
+        scale = newScale;
+
+        setTransform();
+    }, { passive: false });
+
+    container.addEventListener('touchend', (e) => {
+        // Si ya no hay dos dedos, desactivamos el pellizco/pan
+        if (e.touches.length < 2) {
+            pinchActive = false;
+        }
+        // No es necesario preventDefault aquí si no hay gesto activo
+    });
 }
